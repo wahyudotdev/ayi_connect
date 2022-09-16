@@ -19,3 +19,12 @@ class ChoosePhotoEvent extends PersonalInformationEvent {
 class GetCurrentLocationEvent extends PersonalInformationEvent {}
 
 class GetProvinceEvent extends PersonalInformationEvent {}
+
+class SetBirthdateEvent extends PersonalInformationEvent {
+  final DateTime data;
+
+  const SetBirthdateEvent(this.data);
+
+  @override
+  List<Object?> get props => [data];
+}

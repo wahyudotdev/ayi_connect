@@ -26,3 +26,12 @@ class ProvinceListState extends PersonalInformationState {
   @override
   List<Object?> get props => [data, nearestPlace];
 }
+
+class BirthdateState extends PersonalInformationState {
+  final DateTime data;
+
+  const BirthdateState(this.data);
+
+  @override
+  List<Object?> get props => [data];
+}

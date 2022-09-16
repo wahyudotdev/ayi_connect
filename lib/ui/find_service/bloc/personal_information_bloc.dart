@@ -44,6 +44,10 @@ class PersonalInformationBloc
         add(GetCurrentLocationEvent());
       });
     });
+
+    on<SetBirthdateEvent>((event, emit) {
+      emit(BirthdateState(event.data));
+    });
   }
 
   Future<Position> _determinePosition() async {

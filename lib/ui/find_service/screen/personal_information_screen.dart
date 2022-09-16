@@ -1,3 +1,4 @@
+import 'package:ayi_connect/core/utils/datetime_extension.dart';
 import 'package:ayi_connect/core/utils/theme_extension.dart';
 import 'package:ayi_connect/core/utils/translation.dart';
 import 'package:ayi_connect/core/widgets/app_button.dart';
@@ -13,6 +14,7 @@ import 'package:ayi_connect/ui/find_service/widget/find_service_app_bar.dart';
 import 'package:ayi_connect/ui/find_service/widget/phone_number_field.dart';
 import 'package:ayi_connect/ui/find_service/widget/select_gender_checkbox.dart';
 import 'package:ayi_connect/ui/find_service/widget/upload_image_dialog.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -137,18 +139,49 @@ class PersonalInformationScreen extends StatelessWidget {
   }
 
   Widget _etChooseBirthDate() {
-    return Builder(builder: (context) {
-      return Container(
-        padding: EdgeInsets.symmetric(
-          horizontal: AppTheme.marginHorizontal,
-        ),
-        child: AppTextField(
-          title: context.text.chooseBirthDate,
-          hint: 'MM/DD/YYYY',
-          endIcon: Assets.images.icCalendar.image(),
-        ),
-      );
-    });
+    return BlocBuilder<PersonalInformationBloc, PersonalInformationState>(
+        buildWhen: (previous, current) => current is BirthdateState,
+        builder: (context, state) {
+          final controller = TextEditingController(
+              text: state is BirthdateState
+                  ? state.data.dateFormat('MM/dd/yyyy')
+                  : null);
+          return Container(
+            padding: EdgeInsets.symmetric(
+              horizontal: AppTheme.marginHorizontal,
+            ),
+            child: AppTextField(
+              title: context.text.chooseBirthDate,
+              hint: 'MM/DD/YYYY',
+              controller: controller,
+              endIcon: Assets.images.icCalendar.image(),
+              endIconClicked: () => showCupertinoModalPopup(
+                context: context,
+                builder: (builder) => Container(
+                  height: 500,
+                  color: const Color.fromARGB(255, 255, 255, 255),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 400,
+                        child: CupertinoDatePicker(
+                            initialDateTime: DateTime.now(),
+                            mode: CupertinoDatePickerMode.date,
+                            onDateTimeChanged: (data) => context
+                                .read<PersonalInformationBloc>()
+                                .add(SetBirthdateEvent(data))),
+                      ),
+                      CupertinoButton(
+                        child: const Text('OK'),
+                        onPressed: () => Navigator.of(builder).pop(),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          );
+        });
   }
 
   Widget _ddCurrentLocation() {
