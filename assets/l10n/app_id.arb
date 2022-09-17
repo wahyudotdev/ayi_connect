@@ -38,5 +38,8 @@
     "childCare":"Child Care",
     "seniorCare":"Senior Care",
     "homeCare":"Home Care",
-    "otherService":"Other Service"
+    "otherService":"Other Service",
+    "spanish":"Spanish",
+    "english":"English",
+    "mandarin":"Mandarin"
 }

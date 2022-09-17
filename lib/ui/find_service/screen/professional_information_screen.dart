@@ -5,9 +5,15 @@ import 'package:ayi_connect/core/widgets/app_colors.dart';
 import 'package:ayi_connect/core/widgets/app_dropdown.dart';
 import 'package:ayi_connect/core/widgets/app_textfield.dart';
 import 'package:ayi_connect/core/widgets/app_theme.dart';
+import 'package:ayi_connect/core/widgets/app_ui_extension.dart';
+import 'package:ayi_connect/di/injection.dart';
 import 'package:ayi_connect/gen/assets.gen.dart';
+import 'package:ayi_connect/ui/find_service/bloc/profesional_information_bloc.dart';
 import 'package:ayi_connect/ui/find_service/widget/find_service_app_bar.dart';
+import 'package:ayi_connect/ui/find_service/widget/language_chip.dart';
+import 'package:ayi_connect/ui/find_service/widget/spoken_language.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ProfessionalInformationScreen extends StatelessWidget {
@@ -46,21 +52,33 @@ class ProfessionalInformationScreen extends StatelessWidget {
   }
 
   Widget _etSpokenLanguage() {
-    return Builder(builder: (context) {
-      return Container(
-        margin: EdgeInsets.only(
-          right: AppTheme.marginHorizontal,
-          left: AppTheme.marginHorizontal,
-          top: AppTheme.marginVertical,
-        ),
-        child: AppTextField(
-          title: context.text.addLanguage,
-          hint: context.text.addLanguageHint,
-          endIcon: Assets.images.icPlus.image(),
-          readOnlyField: true,
-        ),
-      );
-    });
+    return BlocBuilder<ProfesionalInformationBloc, ProfesionalInformationState>(
+        buildWhen: (previous, current) => current is SelectedLanguage,
+        builder: (context, state) {
+          return Container(
+            margin: EdgeInsets.only(
+              right: AppTheme.marginHorizontal,
+              left: AppTheme.marginHorizontal,
+              top: AppTheme.marginVertical,
+            ),
+            child: SpokenLanguange(
+              title: context.text.addLanguage,
+              hint: context.text.addLanguageHint,
+              readOnlyField: true,
+              endIcon: Assets.images.icPlus.image(),
+              endIconClicked: () {
+                context.openBottomSheet(
+                  builder: (builder) => LanguageChips(
+                    initialValue: state is SelectedLanguage ? state.data : [],
+                    onSelected: (data) => context
+                        .read<ProfesionalInformationBloc>()
+                        .add(SelectLanguage(data)),
+                  ),
+                );
+              },
+            ),
+          );
+        });
   }
 
   Widget _etPreferedService() {
@@ -150,29 +168,32 @@ class ProfessionalInformationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: findServiceAppBar(currentPos: 2),
-      body: CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(
-            child: _etOccupation(),
-          ),
-          SliverToBoxAdapter(
-            child: _etCompany(),
-          ),
-          SliverToBoxAdapter(
-            child: _etSpokenLanguage(),
-          ),
-          SliverToBoxAdapter(
-            child: _etPreferedService(),
-          ),
-          SliverToBoxAdapter(
-            child: _etTellUsAboutYou(),
-          ),
-          SliverToBoxAdapter(
-            child: _btnSubmit(),
-          ),
-        ],
+    return BlocProvider(
+      create: (context) => getIt<ProfesionalInformationBloc>(),
+      child: Scaffold(
+        appBar: findServiceAppBar(currentPos: 2),
+        body: CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(
+              child: _etOccupation(),
+            ),
+            SliverToBoxAdapter(
+              child: _etCompany(),
+            ),
+            SliverToBoxAdapter(
+              child: _etSpokenLanguage(),
+            ),
+            SliverToBoxAdapter(
+              child: _etPreferedService(),
+            ),
+            SliverToBoxAdapter(
+              child: _etTellUsAboutYou(),
+            ),
+            SliverToBoxAdapter(
+              child: _btnSubmit(),
+            ),
+          ],
+        ),
       ),
     );
   }
