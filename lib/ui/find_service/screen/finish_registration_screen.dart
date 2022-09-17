@@ -26,6 +26,7 @@ class FinishRegistrationScreen extends StatelessWidget {
               context.text.congratulations,
               style: context.textTheme.headline4?.copyWith(
                 color: Colors.white,
+                fontWeight: FontWeight.bold,
               ),
             ),
             Text(
