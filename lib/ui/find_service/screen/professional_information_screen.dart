@@ -15,6 +15,7 @@ import 'package:ayi_connect/ui/find_service/widget/spoken_language.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 class ProfessionalInformationScreen extends StatelessWidget {
   const ProfessionalInformationScreen({Key? key}) : super(key: key);
@@ -66,6 +67,7 @@ class ProfessionalInformationScreen extends StatelessWidget {
               hint: context.text.addLanguageHint,
               readOnlyField: true,
               endIcon: Assets.images.icPlus.image(),
+              choosenLanguage: state is SelectedLanguage ? state.data : null,
               endIconClicked: () {
                 context.openBottomSheet(
                   builder: (builder) => LanguageChips(
@@ -160,7 +162,7 @@ class ProfessionalInformationScreen extends StatelessWidget {
         ),
         child: AppButton(
           caption: context.text.submit,
-          onPressed: () => null,
+          onPressed: () => context.push('/finish_registration'),
         ),
       );
     });

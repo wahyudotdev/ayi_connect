@@ -41,5 +41,7 @@
     "otherService":"Other Service",
     "spanish":"Spanish",
     "english":"English",
-    "mandarin":"Mandarin"
+    "mandarin":"Mandarin",
+    "congratulations":"Congratulations",
+    "registrationSuccess":"Your Registration was Successfull"
 }

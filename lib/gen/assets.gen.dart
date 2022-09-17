@@ -29,6 +29,13 @@ class $AssetsImagesGen {
   /// File path: assets/images/im_job.png
   AssetGenImage get imJob => const AssetGenImage('assets/images/im_job.png');
 
+  /// File path: assets/images/im_ok.png
+  AssetGenImage get imOk => const AssetGenImage('assets/images/im_ok.png');
+
+  /// File path: assets/images/im_people.png
+  AssetGenImage get imPeople =>
+      const AssetGenImage('assets/images/im_people.png');
+
   /// File path: assets/images/im_photo.png
   AssetGenImage get imPhoto =>
       const AssetGenImage('assets/images/im_photo.png');

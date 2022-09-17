@@ -32,10 +32,12 @@ class _LanguageChipsState extends State<LanguageChips> {
   Widget _chip(String value) {
     return Builder(builder: (context) {
       return Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.symmetric(
+          horizontal: 2.0,
+        ),
         child: InputChip(
           label: Text(value),
-          selectedColor: AppColors.primary,
+          selectedColor: AppColors.secondary,
           labelStyle: context.textTheme.bodyText1?.copyWith(
             color:
                 selected.contains(value) ? Colors.white : AppColors.textBlack,
